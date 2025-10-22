@@ -1,0 +1,22 @@
+name: project_name
+description: "A new Flutter package project."
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.0
+  flutter: "^3.32.8"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  core_test:
+    path: ../../core/core_test
+  shared_test: 
+    path: ../../shared/shared_test
+  feature_test:
+    path: ../../feature/feature_test
+
+dev_dependencies:
+  build_runner: 2.7.0
+  flutter_lints: ^5.0.0

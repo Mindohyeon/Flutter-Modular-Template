@@ -1,0 +1,8 @@
+# melos_managed_dependency_overrides: core_test,feature_test,shared_test
+dependency_overrides:
+  core_test:
+    path: ../../core/test
+  feature_test:
+    path: ../../feature/test
+  shared_test:
+    path: ../../shared/test

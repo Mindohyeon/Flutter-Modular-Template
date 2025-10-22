@@ -1,0 +1,70 @@
+name: workspace_melos
+
+packages:
+  - app/**
+  - core/**
+  - feature/**
+  - tool/**
+  - shared/**
+
+command:
+  bootstrap:
+    hooks:
+      post: melos run setup
+
+scripts:
+  # usage: melos run setup
+  setup:
+    run: |
+      melos exec -- rm -rf pubspec.lock &&
+      melos run clean &&
+      melos run pub_get &&
+      melos run build_runner
+
+  # usage: melos run analyze
+  analyze:
+    description: Analyze the project
+    exec: dart analyze .
+
+  # usage: melos run clean
+  clean:
+    run: melos exec -- fvm flutter clean
+
+  # usage: melos run update_packages
+  update_packages:
+    run: melos exec -- fvm flutter update-packages --force-upgrade
+
+  # usage: melos run pub_upgrade
+  pub_upgrade:
+    run: melos exec -- fvm flutter pub upgrade
+
+  # usage: melos run pub_get
+  pub_get:
+    run: melos exec -c 1 -- fvm flutter pub get
+
+  # usage: melos run build_runner
+  # 사전에 tool_network 공통 모듈을 삭제하여 제대로 참조하도록 함
+  # || true = 프로젝트 전체 빌드 build_runner 실패해도 계속 진행 feature 단에서 공통 모듈을 참조하지 못하는 경고를 넘기기 위함
+  build_runner:
+    run: |
+      melos exec -c 1 --depends-on="build_runner" -- fvm flutter pub run build_runner build --delete-conflicting-outputs || true
+
+  # usage: melos run build_runner_clean
+  build_runner_clean:
+    run: melos exec --depends-on="build_runner" -- fvm flutter pub run build_runner clean
+
+  # usage: melos run build_pokit
+  build_pokit:
+    run: melos exec --scope=pokit --depends-on="build_runner" -- fvm flutter pub run build_runner build --delete-conflicting-outputs
+
+  # usage: melos run build_component
+  build_component:
+    run: melos exec --scope=tool_component --depends-on="build_runner" -- fvm flutter pub run build_runner build --delete-conflicting-outputs
+
+  # usage: melos run build_theme
+  build_theme:
+    run: melos exec --scope=tool_theme --depends-on="build_runner" -- fvm flutter pub run build_runner build --delete-conflicting-outputs
+
+  # usage: melos run build_network
+  build_network:
+    run: melos exec --scope=tool_network --depends-on="build_runner" -- fvm flutter pub run build_runner build --delete-conflicting-outputs
