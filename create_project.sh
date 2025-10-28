@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -e # 명령어 실패 시 스크립트 종료하도록 설정
 
 # Flutter 프로젝트 이름 입력
 read -p "Enter your Flutter project name: " PROJECT_NAME
